@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 
-
-
 import argparse
 import base64, os, sys
 
-""" 
+"""
 parser = argparse.ArgumentParser(description='Build GonnaCry.', add_help=True)
 parser.add_argument('-i', '--ip', type=str, required=True, metavar='[FILE]',
     help='Ip address of the server. GonnaCry will try to connect to')
@@ -16,14 +14,15 @@ parser.add_argument('-I', '--img', type=str, required=False, metavar='[FILE]',
 args = parser.parse_args()
  """
 
-
 def error(s):
     print(s)
     sys.exit(-1)
 
+def build(program, file=None):
+    if file is None:
+        file = program
 
-def build(program):
-    command = 'pyinstaller -F --clean GonnaCry/{}.py -n {}'.format(program, program)
+    command = 'pyinstaller -F --clean GonnaCry/{}.py -n {}'.format(file, program)
     os.system(command)
 
     try:
@@ -35,22 +34,17 @@ def build(program):
 
     with open('dist/base64{}'.format(program), 'wb') as f:
         f.write(output64)
-    
+
     return output64
 
-
 def build_gonnacry():
-    build('gonnacry')
-    
-
+    return build('gonnacry', 'main')
 
 def build_decryptor():
     return build('decryptor')
 
-
 def build_daemon():
     return build('daemon')
-
 
 def change_gonnacry_binaries():
     img = ''
@@ -60,16 +54,9 @@ def change_gonnacry_binaries():
 def clean_dist():
     command = ''
 
-
 def main():
     decryptor64 = build_decryptor()
     daemon64 = build_daemon()
 
-
 if __name__ =='__main__':
     main()
-
-
-
-
-
