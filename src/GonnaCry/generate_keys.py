@@ -2,8 +2,7 @@ import base64
 import Crypto.Random
 
 def generate_key(bits, encode=False):
-    generated = Crypto.Random.get_random_bytes(bits // 8)
-    content = generated.read(bits)
+    content = Crypto.Random.get_random_bytes(bits // 8)
 
     if(encode):
         return base64.b64encode(content)
