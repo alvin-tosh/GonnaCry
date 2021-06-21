@@ -20,7 +20,7 @@ Decryptor try to communicate to server to send the Client private key wich is en
 
 GonnaCry requires the pycrypto library and requests, installation below
 
-    ~$ sudo pip install -r requeriments.txt
+    ~$ sudo pip install -r requirements.txt
 
 # Compiling the code
 
