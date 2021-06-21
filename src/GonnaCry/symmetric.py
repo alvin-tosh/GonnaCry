@@ -9,7 +9,7 @@ from Crypto.Cipher import AES
 
 class AESCipher(object):
 
-    def __init__(self, key): 
+    def __init__(self, key):
         self.bs = 32
         self.key = hashlib.sha256(key).digest()
 
@@ -17,24 +17,23 @@ class AESCipher(object):
         raw = self._pad(raw)
         iv = Random.new().read(AES.block_size)
         cipher = AES.new(self.key, AES.MODE_CBC, iv)
-        return base64.b64encode(iv + cipher.encrypt(raw.encode('utf-8')))
+        return base64.b64encode(iv + cipher.encrypt(raw))
 
     def decrypt(self, enc, decryption_key=None):
         enc = base64.b64decode(enc)
         iv = enc[:AES.block_size]
         if(decryption_key):
             self.key = hashlib.sha256(decryption_key).digest()
-            
+
         cipher = AES.new(self.key, AES.MODE_CBC, iv)
-        return self._unpad(cipher.decrypt(enc[AES.block_size:]).decode('utf-8'))
+        return self._unpad(cipher.decrypt(enc[AES.block_size:]))
 
     def _pad(self, s):
-        s = s.decode('utf-8')
-        return s + (self.bs - len(s) % self.bs) * chr(self.bs - len(s) % self.bs)
+        return s + ((self.bs - len(s) % self.bs) * chr(self.bs - len(s) % self.bs)).encode('utf-8')
 
     @staticmethod
     def _unpad(s):
-        return s[:-ord(s[len(s)-1:])]
+        return s[:-ord(s.decode('utf-8')[len(s)-1:])]
 
 if __name__ == "__main__":
     key = generate_keys.generate_key(32, True)
