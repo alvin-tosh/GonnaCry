@@ -66,7 +66,7 @@ def start_encryption(files):
         with open(new_file_name, 'wb') as f:
             f.write(encrypted)
 
-        base64_new_file_name = base64.b64encode(new_file_name)
+        base64_new_file_name = base64.b64encode(new_file_name.encode('utf-8'))
 
         AES_and_base64_path.append((key, base64_new_file_name))
     return AES_and_base64_path
