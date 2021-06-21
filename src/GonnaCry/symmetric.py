@@ -17,7 +17,7 @@ class AESCipher(object):
         raw = self._pad(raw)
         iv = Random.new().read(AES.block_size)
         cipher = AES.new(self.key, AES.MODE_CBC, iv)
-        return base64.b64encode(iv + cipher.encrypt(raw).encode('utf-8'))
+        return base64.b64encode(iv + cipher.encrypt(raw.encode('utf-8')))
 
     def decrypt(self, enc, decryption_key=None):
         enc = base64.b64decode(enc)
@@ -40,7 +40,7 @@ if __name__ == "__main__":
     key = generate_keys.generate_key(32, True)
     cipher_obj = AESCipher(key)
     print("chave: {}".format(key))
-    enc = cipher_obj.encrypt("TESTE CRYPTO")
+    enc = cipher_obj.encrypt("TESTE CRYPTO".encode('utf-8'))
     print(enc)
 
     back = cipher_obj.decrypt(enc, key)
