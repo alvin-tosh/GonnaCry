@@ -123,7 +123,7 @@ def menu():
 
     with open(variables.aes_encrypted_keys_path, 'w') as f:
         for _ in enc_aes_key_and_base64_path:
-            line = base64.b64encode(_[0]).deocde('utf-8') + " " + _[1] + "\n"
+            line = base64.b64encode(_[0]).decode('utf-8') + " " + _[1] + "\n"
             f.write(line)
 
     enc_aes_key_and_base64_path = None
