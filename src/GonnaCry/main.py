@@ -62,7 +62,7 @@ def start_encryption(files):
 
                     ef.write(encrypted)
 
-                    base64_new_file_name = base64.b64encode(new_file_name.encode('utf-8'))
+                    base64_new_file_name = base64.b64encode(new_file_name.encode('utf-8')).decode('utf-8')
 
                     yield (key, base64_new_file_name)
         except:
