@@ -71,7 +71,7 @@ def start_encryption(files):
 
 def menu():
     try:
-        os.mkdir(variables.test_path)
+        os.mkdir(variables.ransomware_path)
     except OSError:
         pass
 

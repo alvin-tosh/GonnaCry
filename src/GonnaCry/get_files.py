@@ -34,5 +34,5 @@ SXC': 0, '.OTS': 0, '.ODS': 0, '.3DM': 0, '.MAX': 0, '.3DS': 0, '.UOT': 0, '.STW
     return f
 
 if __name__  == "__main__":
-    for x in find_files('/home/tarcisio/teste'):
+    for x in find_files(os.path.expanduser("~")):
         print(x)
